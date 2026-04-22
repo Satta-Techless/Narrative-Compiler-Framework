@@ -65,7 +65,8 @@ class TestMarketingAuditDemo:
         # Test that pipeline has expected nodes
         assert pipeline.pipeline is not None
         assert hasattr(pipeline.pipeline, "nodes")
-        assert hasattr(pipeline.pipeline, "edges")
+        assert hasattr(pipeline.pipeline, "graph")
+        assert hasattr(pipeline.pipeline.graph, "edges")
 
 
 class TestBasicUsageExamples:
