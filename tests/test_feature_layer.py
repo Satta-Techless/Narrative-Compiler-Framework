@@ -91,4 +91,4 @@ class TestFeatureLayer:
         # Should handle error gracefully
         result = layer.execute(input_data)
         assert "will_error" in result.data
-        # Error handling behavior depends on implementation
+        assert result.data["will_error"] is None
