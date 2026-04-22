@@ -305,4 +305,4 @@ See the [white paper](Narrative%20Compiler%20Framework.pdf) for detailed perform
 
 ---
 
-**Built with ❤️ for accurate, auditable, enterprise-grade document generation.**
+**Built for accurate, auditable, enterprise-grade document generation.**
