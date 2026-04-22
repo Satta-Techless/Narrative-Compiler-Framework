@@ -70,15 +70,29 @@ Write a 2-sentence description highlighting the value. Use ONLY these exact numb
         prompt_template=prompt_template
     )
 
-    # Build the pipeline - Note: Missing proper node imports, this is illustrative
-    # In real code, you'd create proper Input/Output nodes
+    # Build the pipeline
+    pipeline.add_node("features", feature_layer)
+    pipeline.add_node("semantics", semantic_layer)
+    pipeline.add_node("writer", writer)
+
+    pipeline.add_edge("features", "semantics")
+    pipeline.add_edge("semantics", "writer")
 
     print("\nPipeline created successfully!")
-    print("\nTo run this example, you would:")
-    print("1. Add nodes to the pipeline")
-    print("2. Connect them with edges")
-    print("3. Execute with sample data")
-    print("\nSee examples/marketing_audit_demo.py for a complete example.")
+    print("\nLayer 1 (Features): Computes discount_pct and savings_amount")
+    print("Layer 2 (Semantics): Classifies discount level")
+    print("Layer 3 (LLM-Writer): Generates product description")
+
+    # Example data
+    sample_data = {
+        "product_name": "Wireless Headphones",
+        "original_price": 199.99,
+        "current_price": 149.99
+    }
+
+    print(f"\nSample Input: {sample_data}")
+    print("\nTo run full generation with LLM, set OPENAI_API_KEY or ANTHROPIC_API_KEY")
+    print("See examples/marketing_audit_demo.py for a complete end-to-end example.")
 
 
 def feature_layer_example():

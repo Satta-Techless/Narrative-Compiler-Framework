@@ -1,0 +1,79 @@
+{
+  "report_period": "Q4 2025",
+  "validation": {
+    "all_passed": false,
+    "total_count": 15,
+    "passed_count": 12,
+    "failed_count": 3,
+    "pass_rate": 0.8,
+    "results": [
+      {
+        "rule": "check_ltv_cac_ratio",
+        "passed": false,
+        "message": "VALIDATION FAILED: Generated text claims LTV:CAC of 4.0 but actual computed value is 3.0",
+        "expected": 3.0,
+        "found_in_text": "4.0"
+      },
+      {
+        "rule": "check_mer",
+        "passed": true,
+        "message": "MER value 5.0 validated in generated text"
+      },
+      {
+        "rule": "check_revenue_growth",
+        "passed": false,
+        "message": "VALIDATION FAILED: Generated text claims 25% growth but actual is 20%",
+        "expected": 20.0,
+        "found_in_text": "25%"
+      },
+      {
+        "rule": "check_cac_payback",
+        "passed": true,
+        "message": "CAC payback period 2 months validated"
+      },
+      {
+        "rule": "check_health_score",
+        "passed": false,
+        "message": "VALIDATION FAILED: Generated text claims health score of 90 but actual is 85",
+        "expected": 85,
+        "found_in_text": "90"
+      },
+      {
+        "rule": "check_budget_utilization",
+        "passed": true,
+        "message": "Budget utilization 95% validated"
+      }
+    ]
+  },
+
+  "explanation": "This sample demonstrates validation catching errors where the LLM generated incorrect numeric facts. This is exactly what NCF's validation layer is designed to detect.",
+
+  "corrective_actions": [
+    "Review failed validations",
+    "Regenerate sections with failed validations",
+    "Update prompts to emphasize exact numbers",
+    "Add more specific constraints to LLM instructions"
+  ],
+
+  "features_computed": {
+    "ltv_cac_ratio": 3.0,
+    "mer": 5.0,
+    "revenue_growth_pct": 20.0,
+    "health_score": 85,
+    "budget_utilization_pct": 95.0
+  },
+
+  "what_llm_generated": {
+    "incorrect_ltv_cac": "4.0",
+    "incorrect_growth": "25%",
+    "incorrect_health_score": "90"
+  },
+
+  "metadata": {
+    "generated_at": "2026-04-22T10:10:00Z",
+    "ncf_version": "1.0.0",
+    "provider": "openai",
+    "model": "gpt-4",
+    "validation_status": "FAILED - Manual review required"
+  }
+}
