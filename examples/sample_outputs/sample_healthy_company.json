@@ -18,23 +18,28 @@
     "all_passed": true,
     "total_count": 15,
     "passed_count": 15,
-    "failed_count": 0,
     "pass_rate": 1.0,
     "results": [
       {
         "rule": "check_ltv_cac_ratio",
         "passed": true,
-        "message": "LTV:CAC ratio 3.0 validated in generated text"
+        "details": {
+          "message": "LTV:CAC ratio 3.0 validated in generated text"
+        }
       },
       {
         "rule": "check_mer",
         "passed": true,
-        "message": "MER value 5.0 validated in generated text"
+        "details": {
+          "message": "MER value 5.0 validated in generated text"
+        }
       },
       {
         "rule": "check_revenue_growth",
         "passed": true,
-        "message": "Revenue growth 20% validated in generated text"
+        "details": {
+          "message": "Revenue growth 20% validated in generated text"
+        }
       }
     ]
   },
