@@ -39,26 +39,6 @@
     ]
   },
 
-  "provenance": {
-    "total_nodes_executed": 12,
-    "execution_sequence": [
-      "input",
-      "features",
-      "semantics",
-      "llm_writer_executive",
-      "llm_writer_financial",
-      "llm_writer_funnel",
-      "llm_writer_channels",
-      "llm_writer_swot",
-      "llm_writer_recommendations",
-      "validation",
-      "output"
-    ],
-    "deterministic_node_count": 3,
-    "llm_node_count": 6,
-    "validation_node_count": 1
-  },
-
   "features": {
     "ltv_cac_ratio": 3.0,
     "mer": 5.0,
