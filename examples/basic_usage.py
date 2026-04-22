@@ -4,12 +4,42 @@ Basic usage example for the Narrative Compiler Framework.
 Demonstrates the core concepts and simple pipeline construction.
 """
 from ncf.core.dag import NCFPipeline
-from ncf.core.node import NodeInput
+from ncf.core.node import Node, NodeType, NodeInput, NodeOutput
 from ncf.core.orchestrator import Orchestrator
 from ncf.layers.feature import FeatureLayer
 from ncf.layers.semantic import SemanticLayer, create_threshold_rule
 from ncf.layers.llm_writer import LLMWriter
 from ncf.utils.llm_provider import create_provider
+
+
+class InputNode(Node):
+    """Minimal input node – passes raw data into the pipeline."""
+
+    def __init__(self):
+        super().__init__(NodeType.INPUT)
+        self.is_deterministic = True
+
+    def execute(self, input_data: NodeInput) -> NodeOutput:
+        return NodeOutput(
+            data=input_data.data,
+            metadata=self.metadata,
+            provenance={"source": "user_input"}
+        )
+
+
+class OutputNode(Node):
+    """Minimal output node – passes processed data out of the pipeline."""
+
+    def __init__(self):
+        super().__init__(NodeType.OUTPUT)
+        self.is_deterministic = True
+
+    def execute(self, input_data: NodeInput) -> NodeOutput:
+        return NodeOutput(
+            data=input_data.data,
+            metadata=self.metadata,
+            provenance={"output": "final_result"}
+        )
 
 
 def simple_example():
@@ -70,15 +100,33 @@ Write a 2-sentence description highlighting the value. Use ONLY these exact numb
         prompt_template=prompt_template
     )
 
-    # Build the pipeline - Note: Missing proper node imports, this is illustrative
-    # In real code, you'd create proper Input/Output nodes
+    # Build the pipeline (input → features → semantics → writer → output)
+    pipeline.add_node("input", InputNode())
+    pipeline.add_node("features", feature_layer)
+    pipeline.add_node("semantics", semantic_layer)
+    pipeline.add_node("writer", writer)
+    pipeline.add_node("output", OutputNode())
+
+    pipeline.add_edge("input", "features")
+    pipeline.add_edge("features", "semantics")
+    pipeline.add_edge("semantics", "writer")
+    pipeline.add_edge("writer", "output")
 
     print("\nPipeline created successfully!")
-    print("\nTo run this example, you would:")
-    print("1. Add nodes to the pipeline")
-    print("2. Connect them with edges")
-    print("3. Execute with sample data")
-    print("\nSee examples/marketing_audit_demo.py for a complete example.")
+    print("\nLayer 1 (Features): Computes discount_pct and savings_amount")
+    print("Layer 2 (Semantics): Classifies discount level")
+    print("Layer 3 (LLM-Writer): Generates product description")
+
+    # Example data
+    sample_data = {
+        "product_name": "Wireless Headphones",
+        "original_price": 199.99,
+        "current_price": 149.99
+    }
+
+    print(f"\nSample Input: {sample_data}")
+    print("\nTo run full generation with LLM, set OPENAI_API_KEY or ANTHROPIC_API_KEY")
+    print("See examples/marketing_audit_demo.py for a complete end-to-end example.")
 
 
 def feature_layer_example():

@@ -1,12 +1,12 @@
 # Narrative Compiler Framework (NCF)
 
-**Deterministic data-to-text architecture for enterprise document preparation**
+**Constrained data-to-text architecture for structured document generation**
 
-NCF implements a 4-layer DAG to eliminate LLM hallucinations, reduce token waste, and ensure full auditability in automated document generation.
+NCF implements a 4-layer DAG pipeline to reduce LLM hallucinations, minimize token waste, and provide full auditability in automated document generation.
 
 ## 🎯 What is NCF?
 
-The Narrative Compiler Framework is a production-ready architecture that treats data-to-text generation like a compiler treats source code:
+The Narrative Compiler Framework is a reference architecture that treats data-to-text generation like a compiler treats source code:
 
 1. **Parse and analyze deterministically** (Feature & Semantic Layers)
 2. **Generate surface text only** (LLM-Writer with strict constraints)
@@ -14,11 +14,11 @@ The Narrative Compiler Framework is a production-ready architecture that treats 
 
 ### Key Benefits
 
-- **token cost reduction** through caching and separation of concerns
-- **significant improvement in factual accuracy** via constrained generation
-- **substantial reduction in human review time** depending on use case
-- **auditability** with full provenance tracking
-- **prevents hallucinations, enforces constraints, validates output** in numeric and categorical facts
+- **Token cost reduction** through caching and separation of concerns
+- **Improved factual accuracy** via constrained generation and deterministic computation
+- **Reduced human review time** through automated validation
+- **Full auditability** with complete provenance tracking
+- **Reduced hallucination risk** for numeric and categorical facts through validation
 
 ## 🚀 Quick Start
 
@@ -67,6 +67,11 @@ export ANTHROPIC_API_KEY="your-key-here"
 # Run the marketing audit demo
 python examples/marketing_audit_demo.py
 ```
+
+**Want to see sample outputs first?** Check out [examples/sample_outputs/](examples/sample_outputs/) for:
+- Example successful generation with validation passing
+- Example with validation catching LLM errors (demonstrates validation works!)
+- Full output structure with provenance tracking
 
 ## 📋 Architecture
 
@@ -235,18 +240,24 @@ pytest --cov=src/ncf tests/
 
 ## 📚 Documentation
 
-- [Architecture Guide](docs/architecture.md) - Deep dive into NCF design
-- [API Reference](docs/api_reference.md) - Complete API documentation
-- [Skill Development Guide](docs/skill_development.md) - Build your own skills
-- [Marketing Audit Guide](docs/marketing_audit_guide.md) - Using the demo skill
+Full documentation is under development. For now, see:
+- [White Paper](Narrative%20Compiler%20Framework.pdf) - Detailed architecture and design rationale
+- [Marketing Audit Example](examples/marketing_audit_demo.py) - Complete working example
+- [Basic Usage](examples/basic_usage.py) - Simple getting started examples
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+Quick start:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes with tests
+4. Submit a pull request
 
 ## 📄 License
 
-Creative Commons Attribution 4.0 International (CC BY 4.0)
+MIT License
 
 See [LICENSE](LICENSE) for details.
 
@@ -275,16 +286,27 @@ NCF builds on established NLG research:
 
 ## ⚡ Performance
 
-Based on published benchmarks and analogous systems:
+NCF's architectural approach offers several advantages over plain LLM prompting:
 
-| Metric | Improvement |
-|--------|-------------|
-| Token Cost | -40% |
-| Factual Accuracy | +30.5% |
-| Review Time | -12% to -92% |
-| Hallucination Rate | Near zero for numeric facts |
+| Metric | Expected Benefit |
+|--------|------------------|
+| Token Cost | Reduced through caching deterministic computations |
+| Factual Accuracy | Improved through constrained generation and validation |
+| Review Time | Reduced through automated fact-checking |
+| Hallucination Risk | Significantly reduced for numeric facts through validation |
 
-See the [white paper](Narrative%20Compiler%20Framework.pdf) for detailed performance analysis.
+*Note: Actual performance depends on use case, data quality, and validation rules. See the [white paper](Narrative%20Compiler%20Framework.pdf) for detailed analysis and benchmarking methodology.*
+
+## ⚠️ Limitations
+
+NCF is designed for structured, data-driven document generation. Be aware of these limitations:
+
+- **Scope**: Best suited for documents with clear data sources and numeric facts. Not a general-purpose text generator.
+- **Setup Required**: Requires upfront schema definition, feature functions, and validation rules.
+- **Validation Coverage**: Effectiveness depends on comprehensiveness of validation rules. Unchecked claims may still be inaccurate.
+- **LLM Quality Still Matters**: While NCF constrains generation, fluency and coherence still depend on the underlying LLM.
+- **Not a Full Compiler**: Despite the name, NCF is not a formal compiler with guaranteed correctness proofs.
+- **Best for Structured Documents**: Works well for reports, audits, summaries. Less suitable for creative or open-ended writing.
 
 ## 🆘 Support
 
@@ -305,4 +327,4 @@ See the [white paper](Narrative%20Compiler%20Framework.pdf) for detailed perform
 
 ---
 
-**Built for accurate, auditable, enterprise-grade document generation.**
+**A structured approach to data-driven document generation with LLMs.**

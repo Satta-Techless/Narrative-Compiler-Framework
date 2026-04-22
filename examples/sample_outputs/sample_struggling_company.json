@@ -1,0 +1,71 @@
+{
+  "report_period": "Q4 2025",
+  "sections": {
+    "executive_summary": "Sample executive summary for a struggling company showing challenges with Marketing Efficiency Ratio (MER) of 1.2, LTV:CAC ratio of 0.8, and health score of 35/100.",
+
+    "financial_performance": "Sample financial analysis showing revenue decline of -15%, extended CAC payback period of 18 months, and concerning burn rate.",
+
+    "funnel_analysis": "Sample funnel analysis identifying conversion bottlenecks and drop-off points.",
+
+    "channel_performance": "Sample channel analysis revealing underperforming channels and optimization opportunities.",
+
+    "swot_analysis": "Sample SWOT identifying critical weaknesses and urgent threats that need addressing.",
+
+    "recommendations": "Sample urgent action plan for the next 30 days with focus on stopping the decline."
+  },
+
+  "validation": {
+    "all_passed": true,
+    "total_count": 15,
+    "passed_count": 15,
+    "pass_rate": 1.0,
+    "results": [
+      {
+        "rule": "check_ltv_cac_ratio",
+        "passed": true,
+        "details": {
+          "message": "LTV:CAC ratio 0.8 validated in generated text"
+        }
+      },
+      {
+        "rule": "check_mer",
+        "passed": true,
+        "details": {
+          "message": "MER value 1.2 validated in generated text"
+        }
+      },
+      {
+        "rule": "check_revenue_growth",
+        "passed": true,
+        "details": {
+          "message": "Revenue decline -15% validated in generated text"
+        }
+      }
+    ]
+  },
+
+  "features": {
+    "ltv_cac_ratio": 0.8,
+    "mer": 1.2,
+    "revenue_growth_pct": -15.0,
+    "cac_payback_months": 18.0,
+    "budget_utilization_pct": 110.0,
+    "health_score": 35
+  },
+
+  "semantic_tags": {
+    "ltv_cac_level": "critical",
+    "mer_level": "poor",
+    "growth_level": "declining",
+    "overall_health": "needs_urgent_attention"
+  },
+
+  "metadata": {
+    "generated_at": "2026-04-22T10:05:00Z",
+    "ncf_version": "1.0.0",
+    "provider": "anthropic",
+    "model": "claude-3-5-sonnet",
+    "total_tokens": 2800,
+    "generation_time_seconds": 52
+  }
+}
