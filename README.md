@@ -14,11 +14,11 @@ The Narrative Compiler Framework is a production-ready architecture that treats 
 
 ### Key Benefits
 
-- **40% token cost reduction** through caching and separation of concerns
-- **30.5% improvement in factual accuracy** via constrained generation
-- **12-92% reduction in human review time** depending on use case
-- **100% auditability** with full provenance tracking
-- **Zero hallucinations** in numeric and categorical facts
+- **token cost reduction** through caching and separation of concerns
+- **significant improvement in factual accuracy** via constrained generation
+- **substantial reduction in human review time** depending on use case
+- **auditability** with full provenance tracking
+- **prevents hallucinations, enforces constraints, validates output** in numeric and categorical facts
 
 ## 🚀 Quick Start
 
