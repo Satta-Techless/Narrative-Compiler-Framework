@@ -102,9 +102,9 @@ This document summarizes the improvements made to the Narrative Compiler Framewo
    - Package name: narrative-compiler-framework ✓
    - Description: consistent ✓
 
-## Files Created (14 new files)
+## Files Created (15 new files)
 
-### Tests (5 files)
+### Tests (6 files)
 - tests/__init__.py
 - tests/test_feature_layer.py
 - tests/test_semantic_layer.py
@@ -125,6 +125,9 @@ This document summarizes the improvements made to the Narrative Compiler Framewo
 
 ### Scripts (1 file)
 - scripts/verify_install.py
+
+### Summary (1 file)
+- IMPLEMENTATION_SUMMARY.md
 
 ## Files Modified (5 files)
 

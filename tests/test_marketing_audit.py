@@ -1,5 +1,4 @@
 """Tests for Marketing Audit feature computations."""
-import pytest
 from ncf.skills.marketing_audit.features import (
     compute_ltv_cac_ratio,
     compute_mer,

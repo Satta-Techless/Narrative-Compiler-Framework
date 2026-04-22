@@ -46,7 +46,7 @@ All three examples include:
 - Semantic classifications (rule-based)
 - Generated text sections (LLM output)
 - Validation results (automated checks)
-- Provenance tracking (execution path)
+- Provenance (available separately via `pipeline.get_provenance()`, not embedded in the report JSON)
 
 ### Validation Works
 

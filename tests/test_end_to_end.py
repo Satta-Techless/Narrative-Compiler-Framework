@@ -143,8 +143,11 @@ class TestPipelineInvariants:
         # Test that we can compute features without LLM
         for feature_name, feature_func in MARKETING_AUDIT_FEATURES.items():
             try:
-                result = feature_func(data)
-                # Result should be deterministic
-                assert result is not None or result is None  # Either valid or explicitly None
+                result1 = feature_func(data)
+                result2 = feature_func(data)
+                # Each call with the same input must produce the same output (determinism invariant)
+                assert result1 == result2, f"Feature {feature_name} is not deterministic"
+            except AssertionError:
+                raise
             except Exception as e:
                 pytest.fail(f"Feature {feature_name} failed: {e}")

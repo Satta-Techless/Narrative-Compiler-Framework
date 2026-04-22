@@ -1,5 +1,4 @@
 """Tests for Feature Layer - deterministic computations."""
-import pytest
 from ncf.layers.feature import (
     compute_growth_rate,
     compute_ratio,

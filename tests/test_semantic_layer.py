@@ -1,5 +1,4 @@
 """Tests for Semantic Layer - rule evaluation."""
-import pytest
 from ncf.layers.semantic import SemanticLayer, SemanticRule, create_threshold_rule
 from ncf.core.node import NodeInput
 

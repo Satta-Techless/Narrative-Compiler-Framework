@@ -1,5 +1,4 @@
 """Tests for Validation Layer - output reconciliation."""
-import pytest
 from ncf.layers.validation import ValidationLayer, ValidationRule
 from ncf.core.node import NodeInput
 
@@ -48,8 +47,11 @@ class TestValidationRules:
 
         assert "validation" in result.data
         validation = result.data["validation"]
-        # Validation behavior depends on implementation details
-        # This tests that validation detects the mismatch
+        assert validation["all_passed"] is False
+        assert validation["passed_count"] == 0
+        assert validation["total_count"] == 1
+        assert validation["results"][0]["rule"] == "check_discount"
+        assert validation["results"][0]["passed"] is False
 
     def test_multiple_validations(self):
         """Test multiple validation rules."""
