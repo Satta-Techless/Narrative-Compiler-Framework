@@ -1,7 +1,7 @@
 """
 LLM Provider abstraction for NCF.
 
-Supports multiple LLM providers (OpenAI, Anthropic) with a unified interface.
+Supports multiple LLM providers (OpenAI, Anthropic, Gemini) with a unified interface.
 """
 from typing import Dict, Any, Optional, List, Union
 from abc import ABC, abstractmethod
@@ -13,6 +13,7 @@ class LLMProvider(str, Enum):
     """Supported LLM providers."""
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
+    GEMINI = "gemini"
 
 
 class StructuredOutputFormat(str, Enum):
@@ -254,6 +255,120 @@ class AnthropicProvider(BaseLLMProvider):
             raise ValueError(f"Could not parse JSON from response: {response.content}")
 
 
+class GeminiProvider(BaseLLMProvider):
+    """Google Gemini LLM provider."""
+
+    DEFAULT_MODEL = "gemini-1.5-pro"
+
+    def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
+        """
+        Initialize Gemini provider.
+
+        Args:
+            api_key: Google AI API key (or set GOOGLE_API_KEY env var)
+            model: Model to use (default: gemini-1.5-pro)
+        """
+        super().__init__(api_key, model or self.DEFAULT_MODEL)
+        import google.genai as genai
+        kwargs: Dict[str, Any] = {}
+        if api_key:
+            kwargs["api_key"] = api_key
+        self.client = genai.Client(**kwargs)
+        self._genai = genai
+
+    def complete(self, request: LLMRequest) -> LLMResponse:
+        """Generate a completion using Gemini."""
+        import google.genai.types as genai_types
+
+        model_name = request.model or self.default_model
+
+        # Separate system messages from conversation messages
+        system_parts = [msg.content for msg in request.messages if msg.role == "system"]
+        conversation = [msg for msg in request.messages if msg.role != "system"]
+
+        # Build contents list (role: "user" or "model")
+        contents = []
+        for msg in conversation:
+            role = "model" if msg.role == "assistant" else "user"
+            contents.append(genai_types.Content(
+                role=role,
+                parts=[genai_types.Part(text=msg.content)],
+            ))
+
+        config_kwargs: Dict[str, Any] = {
+            "temperature": request.temperature,
+        }
+        if request.max_tokens is not None:
+            config_kwargs["max_output_tokens"] = request.max_tokens
+        if system_parts:
+            config_kwargs["system_instruction"] = "\n\n".join(system_parts)
+
+        config = genai_types.GenerateContentConfig(**config_kwargs)
+
+        response = self.client.models.generate_content(
+            model=model_name,
+            contents=contents,
+            config=config,
+        )
+
+        text = response.text
+
+        usage_metadata = getattr(response, "usage_metadata", None)
+        usage: Dict[str, int] = {}
+        if usage_metadata:
+            usage = {
+                "prompt_tokens": getattr(usage_metadata, "prompt_token_count", 0) or 0,
+                "completion_tokens": getattr(usage_metadata, "candidates_token_count", 0) or 0,
+                "total_tokens": getattr(usage_metadata, "total_token_count", 0) or 0,
+            }
+
+        candidate = response.candidates[0] if response.candidates else None
+        finish_reason = str(candidate.finish_reason) if candidate and candidate.finish_reason else None
+
+        return LLMResponse(
+            content=text,
+            model=model_name,
+            usage=usage,
+            finish_reason=finish_reason,
+            raw_response={"candidates_count": len(response.candidates) if response.candidates else 0},
+        )
+
+    def complete_structured(
+        self,
+        request: LLMRequest,
+        schema: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Generate structured output using prompt engineering."""
+        import json
+        import re
+
+        schema_prompt = (
+            f"\n\nYou must respond with valid JSON matching this schema:\n{json.dumps(schema, indent=2)}"
+        )
+
+        enhanced_messages = [LLMMessage(**msg.model_dump()) for msg in request.messages]
+        if enhanced_messages and enhanced_messages[-1].role == "user":
+            enhanced_messages[-1].content += schema_prompt
+        else:
+            enhanced_messages.append(LLMMessage(role="user", content=schema_prompt))
+
+        enhanced_request = LLMRequest(
+            messages=enhanced_messages,
+            temperature=request.temperature,
+            max_tokens=request.max_tokens,
+        )
+
+        response = self.complete(enhanced_request)
+
+        try:
+            return json.loads(response.content)
+        except json.JSONDecodeError:
+            json_match = re.search(r'```json\s*(\{.*?\})\s*```', response.content, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group(1))
+            raise ValueError(f"Could not parse JSON from response: {response.content}")
+
+
 def create_provider(
     provider: Union[LLMProvider, str],
     api_key: Optional[str] = None,
@@ -273,9 +388,15 @@ def create_provider(
     if isinstance(provider, str):
         provider = LLMProvider(provider)
 
+    kwargs: Dict[str, Any] = {"api_key": api_key}
+    if model is not None:
+        kwargs["model"] = model
+
     if provider == LLMProvider.OPENAI:
-        return OpenAIProvider(api_key=api_key, model=model)
+        return OpenAIProvider(**kwargs)
     elif provider == LLMProvider.ANTHROPIC:
-        return AnthropicProvider(api_key=api_key, model=model)
+        return AnthropicProvider(**kwargs)
+    elif provider == LLMProvider.GEMINI:
+        return GeminiProvider(**kwargs)
     else:
         raise ValueError(f"Unknown provider: {provider}")
