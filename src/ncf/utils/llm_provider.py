@@ -258,7 +258,7 @@ class AnthropicProvider(BaseLLMProvider):
 class GeminiProvider(BaseLLMProvider):
     """Google Gemini LLM provider."""
 
-    DEFAULT_MODEL = "gemini-1.5-pro"
+    DEFAULT_MODEL = "gemini-2.5-pro"
 
     def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
         """
@@ -266,7 +266,7 @@ class GeminiProvider(BaseLLMProvider):
 
         Args:
             api_key: Google AI API key (or set GOOGLE_API_KEY env var)
-            model: Model to use (default: gemini-1.5-pro)
+            model: Model to use (default: gemini-2.5-pro)
         """
         super().__init__(api_key, model or self.DEFAULT_MODEL)
         import google.genai as genai

@@ -59,8 +59,8 @@ class TestCreateProviderFactory:
 
     def test_create_gemini_provider_custom_model(self):
         with patch("google.genai.Client"):
-            provider = create_provider("gemini", api_key="test-key", model="gemini-1.5-flash")
-        assert provider.default_model == "gemini-1.5-flash"
+            provider = create_provider("gemini", api_key="test-key", model="gemini-2.5-flash")
+        assert provider.default_model == "gemini-2.5-flash"
 
 
 class TestGeminiProviderInit:
@@ -80,8 +80,8 @@ class TestGeminiProviderInit:
 
     def test_init_custom_model(self):
         with patch("google.genai.Client"):
-            provider = GeminiProvider(model="gemini-1.5-flash")
-        assert provider.default_model == "gemini-1.5-flash"
+            provider = GeminiProvider(model="gemini-2.5-flash")
+        assert provider.default_model == "gemini-2.5-flash"
 
 
 class TestGeminiProviderComplete:
@@ -128,11 +128,11 @@ class TestGeminiProviderComplete:
 
         provider.complete(LLMRequest(
             messages=[LLMMessage(role="user", content="Hi")],
-            model="gemini-1.5-flash"
+            model="gemini-2.5-flash"
         ))
 
         call_kwargs = provider.client.models.generate_content.call_args[1]
-        assert call_kwargs["model"] == "gemini-1.5-flash"
+        assert call_kwargs["model"] == "gemini-2.5-flash"
 
     def test_system_message_passed_as_system_instruction(self):
         provider = self._make_provider()
